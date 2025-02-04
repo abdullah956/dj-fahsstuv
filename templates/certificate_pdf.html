@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .certificate {
+        width: 100%;
+        text-align: center;
+        margin-top: 50px;
+      }
+      .certificate img {
+        max-width: 200px;
+        height: auto;
+      }
+      .certificate-details {
+        margin-top: 30px;
+      }
+      .certificate-details p {
+        font-size: 14px;
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="certificate">
+      <h1>Certificate of Completion</h1>
+
+      <!-- Display the person's photo -->
+      <div>
+        <img src="{{ photo_path }}" alt="Person's Photo" style="max-width: 100%; height: auto; margin-bottom: 20px;" />
+      </div>
+
+      <div>
+        <img src="data:image/png;base64,{{ qr_code_data }}" alt="QR Code" style="max-width: 100%; height: auto;" />
+      </div>
+
+      <div class="certificate-details">
+        <p>
+          <strong>Name:</strong> {{ certificate.name }}
+        </p>
+        <p>
+          <strong>ID No:</strong> {{ certificate.id_no }}
+        </p>
+        <p>
+          <strong>Iqama No:</strong> {{ certificate.id_iqama_no }}
+        </p>
+        <p>
+          <strong>Issue Date:</strong> {{ certificate.issue_date }}
+        </p>
+        <p>
+          <strong>Valid Until:</strong> {{ certificate.valid_until }}
+        </p>
+        <p>
+          <strong>Details:</strong> {{ certificate.details }}
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
