@@ -1,115 +1,147 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
-<head>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 400px;
-      margin: 20px auto;
-      border: 1px solid #ccc;
-      padding: 20px;
-    }
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    .photo {
-      width: 100px;
-      height: 120px;
-      border: 1px solid #ddd;
-    }
-    .logo {
-      width: 120px;
-    }
-    .info-row {
-      display: flex;
-      margin: 5px 0;
-    }
-    .label {
-      width: 100px;
-      font-weight: bold;
-    }
-    .blue-bar {
-      background-color: #009cc4;
-      color: white;
-      padding: 8px;
-      margin: 15px 0;
-    }
-    .qr-code {
-      width: 100px;
-      height: 100px;
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
-    .footer {
-      margin-top: 20px;
-      font-size: 12px;
-    }
-    .contact-info {
-      margin-top: 15px;
-      font-size: 12px;
-    }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <img class="photo" src="{{ photo_path }}" alt="ID Photo">
-    <img class="logo" src="" alt="Fahss Logo">
-    <div class="qr-code">
-      <img src="data:image/png;base64,{{ qr_code_data }}" alt="QR Code">
-    </div>
-  </div>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 400px;
+        margin: 20px auto;
+        border: 1px solid #ccc;
+        padding: 20px;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .photo {
+        width: 100px;
+        height: 120px;
+        border: 1px solid #ddd;
+      }
+      .logo {
+        width: 120px;
+      }
+      .info-row {
+        display: flex;
+        margin: 5px 0;
+      }
+      .label {
+        width: 100px;
+        font-weight: bold;
+      }
+      .blue-bar {
+        background-color: #009cc4;
+        color: white;
+        padding: 8px;
+        margin: 15px 0;
+      }
+      .qr-code {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+      .footer {
+        margin-top: 20px;
+        font-size: 12px;
+      }
+      .contact-info {
+        margin-top: 15px;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <table width="100%" style="border: none">
+      <tr>
+        <td style="width: 30%; text-align: left">
+          <img
+            src="{{ photo_path }}"
+            alt="Photo"
+            style="width: 100px; height: 100px; border-radius: 50%"
+          />
+        </td>
+        <td style="width: 70%; text-align: right">
+          <!-- <img
+            src="{% static 'img/logo.png' %}"
+            alt="Logo"
+            style="width: 120px"
+          /> -->
+          <img src="{{ request.build_absolute_uri }}/static/img/logo.png" alt="Logo" width="150" height="70">
+        </td>
+      </tr>
+    </table>
 
-  <div class="info-section">
-    <div class="info-row">
-      <span class="label">ID NO.</span>
-      <span>{{ certificate.id_no }}</span>
-    </div>
-    <div class="info-row">
-      <span class="label">Name:</span>
-      <span>{{ certificate.name }}</span>
-    </div>
-    <div class="info-row">
-      <span class="label">ID/Iqama No:</span>
-      <span>{{ certificate.id_iqama_no }} </span>
-    </div>
-    <div class="info-row">
-      <span class="label">Issue on:</span>
-      <span>{{ certificate.issue_date }}</span>
-    </div>
-    <div class="info-row">
-      <span class="label">Valid up to:</span>
-      <span>{{ certificate.valid_until }}</span>
-    </div>
-  </div>
+    <table width="100%" style="margin-top: 20px">
+      <tr>
+        <td><strong>ID NO:</strong> {{ certificate.id_no }}</td>
+        <td rowspan="4" style="text-align: right">
+          <img
+            src="data:image/png;base64,{{ qr_code_data }}"
+            alt="QR Code"
+            style="width: 100px; height: 100px"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Name:</strong> {{ certificate.name }}</td>
+      </tr>
+      <tr>
+        <td><strong>ID/Iqama No:</strong> {{ certificate.id_iqama_no }}</td>
+      </tr>
+      <tr>
+        <td><strong>Issue on:</strong> {{ certificate.issue_date }}</td>
+      </tr>
+      <tr>
+        <td><strong>Valid up to:</strong> {{ certificate.valid_until }}</td>
+      </tr>
+    </table>
 
-  <div class="blue-bar">
-    Has successfully completed the assessment and examination
-  </div>
-
-  <div class="details-section">
-    <div class="info-row">
-      <span class="label">Details:</span>
-      <span>{{ certificate.details }}  </span>
+    <div
+      style="
+        background-color: #009cc4;
+        color: white;
+        padding: 8px;
+        text-align: center;
+        margin-top: 10px;
+      "
+    >
+      Has successfully completed the assessment and examination
     </div>
-  </div>
 
-  <div class="contact-info">
-    <p>For Card Verification</p>
-    <p>Tel Jubail: 013 340 7607</p>
-    <p>Fax Jubail: 013 340 7605</p>
-    <p>Tel Riyadh: 011 478 6214</p>
-    <p>Tel Jeddah: 012 610 9012</p>
-    <p>Tel Yanbu: 014 325 1475</p>
-    <p>Email: info@fahsstuv.com</p>
-    <p>www.fahsstuv.com</p>
-  </div>
+    <table width="100%" style="margin-top: 10px">
+      <tr>
+        <td><strong>Details:</strong> {{ certificate.details }}</td>
+      </tr>
+    </table>
 
-  <div class="blue-bar">
-    This card is issued by and remains the property of FAHSS/TUV
-  </div>
-</body>
+    <div style="margin-top: 10px">
+      <strong>For Card Verification</strong><br />
+      Tel Jubail: 013 340 7607 | Fax Jubail: 013 340 7605 <br />
+      Tel Riyadh: 011 478 6214 | Tel Jeddah: 012 610 9012 <br />
+      Tel Yanbu: 014 325 1475 <br />
+      Email: info@fahsstuv.com | www.fahsstuv.com
+    </div>
+
+    <div style="margin-top: 10px">
+      <p>________________________</p>
+      <p>Authorized Signature</p>
+    </div>
+
+    <div
+      style="
+        background-color: #009cc4;
+        color: white;
+        padding: 8px;
+        text-align: center;
+        margin-top: 10px;
+      "
+    >
+      This card is issued by and remains the property of FAHSS/TUV
+    </div>
+  </body>
 </html>

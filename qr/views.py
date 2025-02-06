@@ -10,6 +10,8 @@ from xhtml2pdf import pisa
 from .forms import CertificateForm
 from .models import Certificate
 
+
+
 def certificate_form_view(request):
     if request.method == "POST":
         form = CertificateForm(request.POST, request.FILES)
@@ -32,12 +34,18 @@ from io import BytesIO
 import qrcode
 from django.core.files.base import ContentFile
 import base64
+from django.templatetags.static import static
+
 
 
 def download_certificate_pdf(request, pk):
     certificate = get_object_or_404(Certificate, pk=pk)
     template_path = "certificate_pdf.html"
-    context = {"certificate": certificate}
+    # context = {"certificate": certificate}
+    context = {
+        "certificate": certificate,
+        "logo_url": request.build_absolute_uri(static('img/logo2.png'))
+    }
 
     # Generate QR Code dynamically
     qr_data = f"{request.build_absolute_uri('/certificates/')}{certificate.id}/"
@@ -72,6 +80,38 @@ def download_certificate_pdf(request, pk):
     
     return response
 
+from django.http import JsonResponse
+def get_certificate_data(request, pk):
+    certificate = get_object_or_404(Certificate, pk=pk)
+    qr_data = f"{request.build_absolute_uri('/certificates/')}{certificate.id}/"
+    
+    # Generate QR Code
+    qr = qrcode.make(qr_data)
+    qr_image = BytesIO()
+    qr.save(qr_image, format="PNG")
+    qr_image.seek(0)
+    
+    # Convert QR Code to Base64
+    qr_code_data = base64.b64encode(qr_image.read()).decode("utf-8")
+
+    data = {
+        "id_no": certificate.id_no,
+        "name": certificate.name,
+        "id_iqama_no": certificate.id_iqama_no,
+        "issue_date": certificate.issue_date.strftime('%b-%d-%Y'),
+        "valid_until": certificate.valid_until.strftime('%b-%d-%Y'),
+        "details": certificate.details,
+        "company": certificate.company,
+        "s_office": certificate.s_office,
+        "ts_no": certificate.ts_no,
+        "qr_code": f"data:image/png;base64,{qr_code_data}",
+        "photo_url": request.build_absolute_uri(certificate.photo.url) if certificate.photo else "",
+        "logo_url": request.build_absolute_uri(static('img/logo2.png')),
+        "logo_url2": request.build_absolute_uri(static('img/logo.png')),
+        "sign_url": request.build_absolute_uri(static('img/sign.png')),
+    }
+    
+    return JsonResponse(data)
 
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
