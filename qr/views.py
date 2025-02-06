@@ -102,3 +102,11 @@ def signup_view(request):
 def logout_view(request):
     logout(request)
     return redirect("login")
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import Certificate
+
+def certificate_detail(request, id):
+    certificate = get_object_or_404(Certificate, id=id)
+    return render(request, 'certificate_detail.html', {'certificate': certificate})

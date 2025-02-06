@@ -5,6 +5,9 @@ from config.models import BasedModel
 class Certificate(BasedModel):
     id_no = models.CharField(max_length=20, unique=True)
     name = models.CharField(max_length=255)
+    s_office = models.CharField(max_length=255)
+    ts_no = models.CharField(max_length=255)
+    company = models.CharField(max_length=255)
     id_iqama_no = models.CharField(max_length=50)
     issue_date = models.DateField()
     valid_until = models.DateField()
