@@ -1,10 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Certificate List</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <style>
       .certificate-photo {
         width: 150px;
@@ -14,57 +18,136 @@
         display: block;
         margin: 20px auto;
       }
+      .bg-custom-nav {
+        background-color: white;
+      }
+      nav {
+        border-bottom: 2px solid rgb(207, 207, 207);
+      }
+      .nav-item-custom {
+        margin-right: 50px;
+      }
+      .bg-custom{
+        background-color: darkblue;
+      }
     </style>
   </head>
   <body class="bg-light">
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert {% if message.tags == 'success' %}
-            alert-success
-          {% else %}
-            alert-danger
-          {% endif %} text-center">{{ message }}</div>
-      {% endfor %}
-    {% endif %}
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-custom-nav p-3">
+      <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+          <img
+            src="{% static 'img/logo.png' %}"
+            alt="Logo"
+            width="40"
+            height="40"
+            class="d-inline-block align-text-top"
+            style="height: 70px; width: 150px"
+          />
+        </a>
 
-    <div class="container mt-5">
-      <div class="container d-flex justify-content-between align-items-center mt-4 mb-4">
-        <h2 class="mb-0">Certificate List</h2>
-        <a href="{% url 'certificate_form' %}" class="btn btn-dark">Add New Certificate</a>
+        <!-- Toggle Button for Mobile -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a
+                href="{% url 'certificate_form' %}"
+                class="nav-link nav-item-custom fw-bold"
+                >Add New Certificate</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fw-bold" href="#">Log Out</a>
+            </li>
+          </ul>
+        </div>
       </div>
+    </nav>
+    <div class="w-100 d-flex justify-content-between align-items-center p-3 mb-5 bg-custom text-light">
+      <h2 class="mx-5">Certificate (Yanbu)</h2>
+      <!-- <a href="{% url 'certificate_form' %}" class="btn btn-dark">Add New Certificate</a> -->
+  </div>
+    {% if messages %} {% for message in messages %}
+    <div
+      class="alert {% if message.tags == 'success' %} alert-success {% else %} alert-danger {% endif %} text-center"
+    >
+      {{ message }}
+    </div>
+    {% endfor %} {% endif %}
+
+    <div class="container">
+      
 
       <div class="row">
         {% for certificate in certificates %}
-          <div class="col-md-6 col-lg-4 mb-4">
-            <div class="card shadow-sm">
-              <div class="card-body text-center">
-                {% if certificate.photo %}
-                  <img src="{{ certificate.photo.url }}" class="certificate-photo" alt="Certificate Photo" />
-                {% endif %}
-                <h5 class="card-title">{{ certificate.name }}</h5>
-                <p class="card-text">
-                  <strong>ID Number:</strong> {{ certificate.id_no }}
-                </p>
-                <p class="card-text">
-                  <strong>ID/Iqama No:</strong> {{ certificate.id_iqama_no }}
-                </p>
-                <p class="card-text">
-                  <strong>Issue Date:</strong> {{ certificate.issue_date }}
-                </p>
-                <p class="card-text">
-                  <strong>Valid Until:</strong> {{ certificate.valid_until }}
-                </p>
-                <p class="card-text">
-                  <strong>Details:</strong> {{ certificate.details }}
-                </p>
-              </div>
-              <div class="card-footer text-center">
-                <a href="{% url 'download_certificate_pdf' certificate.id %}" class="btn btn-secondary btn-sm">Click to Get Card</a>
-              </div>
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card shadow-sm">
+            <div class="card-body text-left">
+              <!-- {% if certificate.photo %}
+              <img
+                src="{{ certificate.photo.url }}"
+                class="certificate-photo"
+                alt="Certificate Photo"
+              />
+              {% endif %} -->
+              
+              <p class="card-text">
+                <strong>IdNo</strong> {{ certificate.id_no }}
+              </p>
+              <p class="card-text">
+                <strong>S_Office</strong> {{ certificate.s_office }}
+              </p>
+              <p class="card-text">
+                <strong>TS_No</strong> {{ certificate.ts_no }}
+              </p>
+              <p class="card-text">
+                <strong>Company</strong> {{ certificate.company }}
+              </p>
+              <p class="card-text">
+                <strong>Issue_Date</strong> {{ certificate.issue_date }}
+              </p>
+              <p class="card-text">
+                <strong>Expiry_Date</strong> {{ certificate.valid_until }}
+              </p>
+              <p class="card-text">
+                <strong>Name</strong> {{ certificate.name }}
+              </p>
+              <p class="card-text">
+                <strong>Details</strong> {{ certificate.details }}
+              </p>
+            </div>
+            <div class="card-footer text-center">
+              <a
+                href="{% url 'download_certificate_pdf' certificate.id %}"
+                class="btn btn-secondary btn-sm"
+              >
+                Click to Get Card
+              </a>
             </div>
           </div>
+        </div>
         {% endfor %}
       </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
