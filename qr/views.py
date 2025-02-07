@@ -123,10 +123,10 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect("home")
+            return redirect("certificate_list")
     else:
         form = AuthenticationForm()
-    return render(request, "users/login.html", {"form": form})
+    return render(request, "login.html", {"form": form})
 
 def signup_view(request):
     if request.method == "POST":
