@@ -3,13 +3,19 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
 from django.template.loader import get_template
-from django.core.files.base import ContentFile
-from django.conf import settings
-import os
 from xhtml2pdf import pisa
 from .forms import CertificateForm
 from .models import Certificate
-
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.shortcuts import render, redirect
+from io import BytesIO
+import qrcode
+import base64
+from django.templatetags.static import static
+from django.shortcuts import render, get_object_or_404
+from .models import Certificate
+from django.http import JsonResponse
 
 
 def certificate_form_view(request):
@@ -29,12 +35,10 @@ def certificate_form_view(request):
 def certificate_list_view(request):
     certificates = Certificate.objects.all()
     return render(request, "certificate_list.html", {"certificates": certificates})
+def certificate_list_view2(request):
+    certificates = Certificate.objects.all()
+    return render(request, "certificate_list2.html", {"certificates": certificates})
 
-from io import BytesIO
-import qrcode
-from django.core.files.base import ContentFile
-import base64
-from django.templatetags.static import static
 
 
 
@@ -80,7 +84,6 @@ def download_certificate_pdf(request, pk):
     
     return response
 
-from django.http import JsonResponse
 def get_certificate_data(request, pk):
     certificate = get_object_or_404(Certificate, pk=pk)
     qr_data = f"{request.build_absolute_uri('/certificates/')}{certificate.id}/"
@@ -113,9 +116,7 @@ def get_certificate_data(request, pk):
     
     return JsonResponse(data)
 
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.shortcuts import render, redirect
+
 
 def login_view(request):
     if request.method == "POST":
@@ -143,9 +144,6 @@ def logout_view(request):
     logout(request)
     return redirect("login")
 
-
-from django.shortcuts import render, get_object_or_404
-from .models import Certificate
 
 def certificate_detail(request, id):
     certificate = get_object_or_404(Certificate, id=id)
