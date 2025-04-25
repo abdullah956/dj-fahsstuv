@@ -35,9 +35,21 @@ def certificate_form_view(request):
 def certificate_list_view(request):
     certificates = Certificate.objects.all()
     return render(request, "certificate_list.html", {"certificates": certificates})
+
 def certificate_list_view2(request):
     certificates = Certificate.objects.all()
-    return render(request, "certificate_list2.html", {"certificates": certificates})
+    certs_with_qr = []
+
+    for cert in certificates:
+        url = f"{request.build_absolute_uri('/certificates2/')}{cert.id}/"
+        qr = qrcode.make(url)
+        buffer = BytesIO()
+        qr.save(buffer, format="PNG")
+        qr_b64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+        cert.qr_code_base64 = f"data:image/png;base64,{qr_b64}"
+        certs_with_qr.append(cert)
+
+    return render(request, "certificate_list2.html", {"certificates": certs_with_qr})
 
 
 
@@ -179,3 +191,17 @@ def logout_view(request):
 def certificate_detail(request, id):
     certificate = get_object_or_404(Certificate, id=id)
     return render(request, 'certificate_detail.html', {'certificate': certificate})
+
+def certificate_detail2(request, id):
+    certificate = get_object_or_404(Certificate, id=id)
+    url = request.build_absolute_uri()
+    qr = qrcode.make(url)
+    buffer = BytesIO()
+    qr.save(buffer, format="PNG")
+    qr_b64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    qr_data_uri = f"data:image/png;base64,{qr_b64}"
+
+    return render(request, 'certificate_detail2.html', {
+        'certificate': certificate,
+        'qr_code': qr_data_uri
+    })
