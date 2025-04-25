@@ -116,6 +116,37 @@ def get_certificate_data(request, pk):
     
     return JsonResponse(data)
 
+def get_certificate_data2(request, pk):
+    certificate = get_object_or_404(Certificate, pk=pk)
+    qr_data = f"{request.build_absolute_uri('/certificates/')}{certificate.id}/"
+    
+    # Generate QR Code
+    qr = qrcode.make(qr_data)
+    qr_image = BytesIO()
+    qr.save(qr_image, format="PNG")
+    qr_image.seek(0)
+    
+    # Convert QR Code to Base64
+    qr_code_data = base64.b64encode(qr_image.read()).decode("utf-8")
+
+    data = {
+        "id_no": certificate.id_no,
+        "name": certificate.name,
+        "id_iqama_no": certificate.id_iqama_no,
+        "issue_date": certificate.issue_date.strftime('%d-%m-%Y'),
+        "valid_until": certificate.valid_until.strftime('%d-%m-%Y'),
+        "details": certificate.details,
+        "company": certificate.company,
+        "s_office": certificate.s_office,
+        "ts_no": certificate.ts_no,
+        "qr_code": f"data:image/png;base64,{qr_code_data}",
+        "photo_url": request.build_absolute_uri(certificate.photo.url) if certificate.photo else "",
+        "logo_url": request.build_absolute_uri(static('img/logo3.png')),
+        "logo_url2": request.build_absolute_uri(static('img/logo3.png')),
+        "sign_url": request.build_absolute_uri(static('img/sign.png')),
+    }
+    
+    return JsonResponse(data)
 
 
 def login_view(request):
