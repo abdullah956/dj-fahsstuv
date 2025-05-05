@@ -193,8 +193,8 @@
       <div class="row">
         <div class="col-md-6 col-lg-4 mb-4">
           <table class="cef">
-            <img src="{{ certificate.photo.url }}" alt="Certificate Photo" class="certificate-photo" />
-            <img src="{{ qr_code }}" alt="QR Code" width="150" height="150" style="display: block; margin: 20px auto;" />
+            <img src="{{ certificate.photo.url }}" alt="Certificate Photo" class="certificate-photo" style="display: none;" />
+            <img src="{{ qr_code }}" alt="QR Code" width="150" height="150" style="display: none; margin: 20px auto;" />
 
             <tr>
               <td class="heading">IdNo:</td>
@@ -229,171 +229,29 @@
               <td class="data">--{{ certificate.details }}</td>
             </tr>
           </table>
-          <button class="generate-pdf" data-id="{{ certificate.id }}">Click here for card</button>
+          <!-- <button class="generate-pdf" data-id="{{ certificate.id }}">Click here for card</button> -->
+          <button
+          class="generate-pdf"
+          data-id="{{ certificate.id }}"
+          data-idno="{{ certificate.id_no }}"
+          data-photo="{{ certificate.photo.url }}"
+          data-qr="{{ certificate.qr_code_base64 }}"
+          data-soffice="{{ certificate.s_office }}"
+          data-tsno="{{ certificate.ts_no }}"
+          data-company="{{ certificate.company }}"
+          data-issue="{{ certificate.issue_date|date:'d-m-Y' }}"
+          data-expiry="{{ certificate.valid_until|date:'d-m-Y' }}"
+          data-name="{{ certificate.name }}"
+          data-details="{{ certificate.details }}"
+          onclick="triggerCardDownload(this)"
+        >
+          Click here for card
+        </button>
         </div>
       </div>
     </div>
 
-    <div id="certificate-template" style="display: none">
-      <div style="
-          font-family: Arial, sans-serif;
-          max-width: 1400px;
-          margin: auto;
-          padding: 40px 100px;
-          position: relative;
-          background-color: white;
-        ">
-        <!-- Header: Photo on Left, Logo on Right -->
-        <div style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            margin-left: 30px ;
-            margin-right: 30px ;
-          ">
-          <img id="certificate-photo" src="" alt="Photo" style="
-              width: 240px;
-              height: 240px;
-              border-radius: 50%;
-              border: 1px solid #ddd;
-            " />
-          <img id="certificate-logo" src="" alt="Logo" style="width: 500px" />
-        </div>
 
-        <!-- Information Section -->
-        <div style="font-size: 30px;margin-left: 30px;line-height: 40px;">
-          <p>
-            <strong>ID NO:</strong>
-            <span id="certificate-id-no" class="mx-4 fw-bold"></span>
-          </p>
-          <p>Details Listed on the reverse side of the card</p>
-          <p>
-            <strong>Name:</strong>
-            <span id="certificate-name" style="margin-left: 160px"></span>
-          </p>
-          <p>
-            <strong>ID/Iqama No:</strong>
-            <span id="certificate-iqama" style="margin-left: 70px"></span>
-          </p>
-          <p>
-            <strong>Issue on:</strong>
-            <span id="certificate-issue" style="margin-left: 125px"></span>
-          </p>
-          <p>
-            <strong>Valid up to:</strong>
-            <span id="certificate-valid" style="margin-left: 95px"></span>
-          </p>
-        </div>
-
-        <span style="font-size: 30px; top: 650px; right: 155px; position: absolute">www.fahsstuv.com</span>
-
-        <!-- Blue Bar -->
-        <div style="
-            background-color: #038fb2;
-            color: white;
-            padding: 8px 5px;
-            text-align: center;
-            font-size: 41px;
-            margin-top: 40px;
-            width: 98%;
-            
-          ">Has successfully completed the assessment and examination</div>
-
-        <div style="margin-top: 30px; margin-left: 30px">
-          <button class="btn" style="
-              font-size: 30px;
-              background-color: rgba(0, 0, 139, 0.742);
-              color: white;
-              padding: 8px 10px;
-            ">
-            <strong>ID NO:</strong>
-            <span id="certificate-id-no-2" class="mx-4 fw-bold"></span>
-          </button>
-        </div>
-
-        <!-- Details Section -->
-        <div class="details-container mt-3" style="margin-left: 30px;">
-          <p class="details-header" style="font-size: 26px;">Details:</p>
-          <div class="details-content" style="font-size: 30px;">
-            -<span id="certificate-details"></span>
-          </div>
-        </div>
-
-        <!-- QR Code on the Right -->
-        <img id="certificate-qr" src="" alt="QR Code" style="
-            width: 260px;
-            height: 260px;
-            position: absolute;
-            top: 380px;
-            right: 150px;
-          " />
-
-        <img id="cef-logo" src="" alt="logo2" style="
-            width: 260px;
-            height: 120px;
-            position: absolute;
-            top: 820px;
-            right: 140px;
-          " />
-
-        <!-- Contact Information -->
-        <div style="
-            margin-top: 10px;
-            font-size: 30px;
-            position: absolute;
-            top: 1050px;
-            right: 140px;
-            line-height: 18px;
-          ">
-          <p style="font-size: 35px;margin-bottom: 30px;">
-            <strong>For Card Verification</strong>
-          </p>
-          <p>
-            <strong>Tel Jubail:</strong>013 340 7607
-          </p>
-          <p>
-            <strong>Fax Jubail:</strong>013 340 7605
-          </p>
-          <p>
-            <strong>Tel Riyadh:</strong>011 478 6214
-          </p>
-          <p>
-            <strong>Tel Jeddah:</strong>012 610 9012
-          </p>
-          <p>
-            <strong>Tel Yanbu:</strong>014 325 1475
-          </p>
-          <p style="margin-top: 30px;">
-            <strong>Email:</strong>info@fahsstuv.com
-          </p>
-          <p>
-            <strong>www.fahsstuv.com</strong>
-          </p>
-        </div>
-
-        <img id="sign" src="" alt="sign" style="
-            width: 220px;
-            height: 100px;
-            position: absolute;
-            top: 1350px;
-            right: 210px;
-          " />
-
-        <!-- Footer Blue Bar -->
-        <div style="
-            background-color: #038fb2;
-            color: white;
-            padding: 8px 5px;
-            text-align: center;
-            margin-top: 10px;
-            font-size: 41px;
-            position: absolute;
-            top: 1460px;
-            width: 85%;
-          ">This card is issued by and remains the property of FAHSS/TUV</div>
-      </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Add jsPDF and html2canvas Libraries -->
@@ -401,89 +259,143 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.generate-pdf').forEach((button) => {
-          button.addEventListener('click', function () {
-            let certificateId = this.getAttribute('data-id')
-      
-            // Fetch data from Django API
-            fetch(`/certificate-data/${certificateId}/`)
-              .then((response) => response.json())
-              .then((data) => {
-                fillCertificateTemplate(data)
-                setTimeout(generatePDF, 1000) // Allow time for image loading
-              })
-              .catch((error) => console.error('Error fetching certificate data:', error))
-          })
-        })
-      })
-      
-      function fillCertificateTemplate(data) {
-        document.getElementById('certificate-id-no').innerText = data.id_no
-        document.getElementById('certificate-id-no-2').innerText = data.id_no
-        document.getElementById('certificate-name').innerText = data.name
-        document.getElementById('certificate-iqama').innerText = data.id_iqama_no
-        document.getElementById('certificate-issue').innerText = data.issue_date
-        document.getElementById('certificate-valid').innerText = data.valid_until
-        document.getElementById('certificate-details').innerText = data.details
-      
-        document.getElementById('certificate-photo').src = data.photo_url
-        document.getElementById('certificate-logo').src = data.logo_url
-        document.getElementById('cef-logo').src = data.logo_url2
-        document.getElementById('sign').src = data.sign_url
-        document.getElementById('certificate-qr').src = data.qr_code
+      function triggerCardDownload(button) {
+        const name = button.dataset.name;
+        const idNumber = button.dataset.idno;
+        const tacNumber = button.dataset.tsno;
+        const company = button.dataset.company;
+        const project = button.dataset.soffice;
+        const issuedDate = button.dataset.issue;
+        const expiryDate = button.dataset.expiry;
+        const details = button.dataset.details;
+        const profilePicUrl = button.dataset.photo;
+        const qrCodeUrl = button.dataset.qr;
+    
+        const frontImage = "{% static 'img/TUV.jpg' %}";
+        const backImage = "{% static 'img/back.jpg' %}";
+        const downImage = "{% static 'img/down.png' %}";
+        const top = "{% static 'img/top.png' %}";
+    
+        downloadCardAsPDF(
+          tacNumber,
+          name,
+          company,
+          project,
+          idNumber,
+          issuedDate,
+          expiryDate,
+          details,
+          profilePicUrl,
+          qrCodeUrl,
+          frontImage,
+          backImage,
+          downImage,
+          top
+        );
       }
-      
-      function generatePDF() {
-        const { jsPDF } = window.jspdf
-        const pdf = new jsPDF('p', 'mm', 'a4') // Portrait mode, A4 size
-        const certificateElement = document.getElementById('certificate-template')
-      
-        // Temporarily show template for rendering
-        document.body.appendChild(certificateElement)
-        certificateElement.style.display = 'block'
-      
-        html2canvas(certificateElement, {
-          scale: 1, // Higher scale for better quality
-          useCORS: true,
-          logging: false,
-          width: certificateElement.scrollWidth,
-          height: certificateElement.scrollHeight
-        }).then((canvas) => {
-          const imgData = canvas.toDataURL('image/png')
-      
-          // A4 dimensions in mm (jsPDF uses mm)
-          const pdfWidth = 210
-          const pdfHeight = 297
-      
-          const imgWidth = pdfWidth - 20 // Leave some margin
-          const imgHeight = (canvas.height * imgWidth) / canvas.width
-      
-          let yPosition = 10 // Start position for the image
-      
-          if (imgHeight <= pdfHeight - 20) {
-            // If the entire content fits on one page, add it directly
-            pdf.addImage(imgData, 'PNG', 10, yPosition, imgWidth, imgHeight)
-          } else {
-            // Split content into multiple pages
-            let heightLeft = imgHeight
-            let position = 10 // Initial Y position
-      
-            while (heightLeft > 0) {
-              pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight)
-              heightLeft -= pdfHeight - 20
-              position -= pdfHeight - 20
-      
-              if (heightLeft > 0) {
-                pdf.addPage()
-                position = 10
-              }
-            }
-          }
-      
-          pdf.save(`Certificate_${Date.now()}.pdf`)
-          certificateElement.style.display = 'none' // Hide after processing
-        })
+    </script>
+    <script>
+      function downloadCardAsPDF(
+        tacNumber,
+        name,
+        company,
+        project,
+        idNumber,
+        issuedDate,
+        expiryDate,
+        details,
+        profilePicUrl,
+        qrCodeUrl,
+        frontImage,
+        backImage,
+        downImage,
+        top
+      ) {
+        const idCard = document.createElement("div");
+        idCard.style.display = "flex";
+        idCard.style.flexDirection = "column";
+        idCard.style.alignItems = "center";
+        idCard.style.padding = "10px";
+        idCard.style.background = "white";
+        idCard.style.width = "600px";
+        idCard.style.height = "800px";
+        idCard.style.position = "absolute";
+        idCard.style.left = "-9999px";
+        // idCard.style.border = "1px solid black";
+
+     
+
+    
+        // Front side
+        const frontCard = document.createElement("div");
+        frontCard.style.width = "600px";
+        frontCard.style.height = "400px";
+        frontCard.style.position = "relative";
+        frontCard.style.background = `url('${frontImage}') no-repeat center center`;
+        frontCard.style.backgroundSize = "contain";
+        frontCard.innerHTML = `
+          <img src="${top}" style="position: absolute; top: 25px; left: 1px;right:0px; width: 600px; height: 89px;" />
+          <p style="position: absolute; top: 125px; left: 40px; color: red;font-size:20px;"><strong>ID No: ${tacNumber}</strong></p>
+          <p style="position: absolute; top: 160px; left: 40px;font-size:16px;">DETAILS LISTED ON THE REVERSE SIDE OF THE CARD</p>
+
+          <div style="position: absolute; top: 193px; left: 40px; width: 450px;font-size:19px ">
+            <p style="margin: 0 0 2px 0;">Name: <span style="margin-left:70px;">${name}</span> </p>
+            <p style="margin: 0 0 2px 0;">ID/Iqama No.: ${idNumber}</p>
+            <p style="margin: 0 0 2px 0;">Issued on: <span style="margin-left:36px;">${issuedDate}</span> </p>
+            <p style="margin: 0 0 2px 0;">Valid up to: <span style="margin-left:24px;">${expiryDate}</span></p>
+           
+          </div>
+          <img src="${profilePicUrl}" style="position: absolute; top: 114px; right: 45px; width: 110px; height: 118px;" />
+          <img src="${qrCodeUrl}" style="position: absolute; top: 230px; right: 44px; width: 110px;height:100px;overflow:hidden;" />
+          
+          <p style="position: absolute; top: 332px; left: 38px;color:white;font-size:19px;">Has successfully completed the assessment and examination</p>
+        `;
+    
+        // Back side
+        const backCard = document.createElement("div");
+        backCard.style.width = "600px";
+        backCard.style.height = "400px";
+        backCard.style.position = "relative";
+        backCard.style.background = `url('${backImage}') no-repeat center center`;
+        backCard.style.backgroundSize = "contain";
+        backCard.innerHTML = `
+        <img src="${downImage}" style="position: absolute; top: 25px; right: 15px; width: 220px;" />
+        <p style="position: absolute; top: 40px; left: 40px; color: red;font-size:20px;"><strong>ID No: ${tacNumber}</strong></p>
+        <div style="position: absolute; top: 95px; left: 40px; width: 310px;height:220px; border: 2px solid black; font-size: 14px;">
+        <div style="border-bottom: 2px solid black; padding: 5px;"><span style="font-size:18px;" >Details:</span></div>
+          <div style="padding: 1px 3px;font-size:18px;width:220px;">
+            <p style="text-indent: 0; padding-left: 20px; margin: 0; text-indent: -10px;line-height:20px;">-${details}</p>
+          </div>
+        </div>
+
+        <p style="position: absolute; top: 332px; left: 30px;color:white;font-size:19px;">This card is issued by and remains the property of FAHSS/TUV</p>
+
+          
+        `;
+    
+        idCard.appendChild(frontCard);
+        idCard.appendChild(backCard);
+        document.body.appendChild(idCard);
+    
+        html2canvas(idCard, { scale: 3, useCORS: true }).then((canvas) => {
+          const { jsPDF } = window.jspdf;
+          let pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+          let imgData = canvas.toDataURL("image/png");
+          pdf.addImage(imgData, "PNG", 10, 10, 190, 250);
+          pdf.save(`ID_Card_${name}.pdf`);
+          document.body.removeChild(idCard);
+        });
+      }
+    
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return (
+          ("0" + date.getDate()).slice(-2) +
+          "/" +
+          ("0" + (date.getMonth() + 1)).slice(-2) +
+          "/" +
+          date.getFullYear()
+        );
       }
     </script>
   </body>
