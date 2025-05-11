@@ -237,7 +237,7 @@
           data-photo="{{ certificate.photo.url }}"
           data-qr="{{ certificate.qr_code_base64 }}"
           data-soffice="{{ certificate.s_office }}"
-          data-tsno="{{ certificate.ts_no }}"
+          data-tsno="{{ certificate.id_iqama_no }}"
           data-company="{{ certificate.company }}"
           data-issue="{{ certificate.issue_date|date:'d-m-Y' }}"
           data-expiry="{{ certificate.valid_until|date:'d-m-Y' }}"
@@ -335,12 +335,12 @@
         frontCard.style.backgroundSize = "contain";
         frontCard.innerHTML = `
           <img src="${top}" style="position: absolute; top: 25px; left: 1px;right:0px; width: 600px; height: 89px;" />
-          <p style="position: absolute; top: 125px; left: 40px; color: red;font-size:20px;"><strong>ID No: ${tacNumber}</strong></p>
+          <p style="position: absolute; top: 125px; left: 40px; color: red;font-size:20px;"><strong>ID No: ${idNumber}</strong></p>
           <p style="position: absolute; top: 160px; left: 40px;font-size:16px;">DETAILS LISTED ON THE REVERSE SIDE OF THE CARD</p>
 
           <div style="position: absolute; top: 193px; left: 40px; width: 450px;font-size:19px ">
             <p style="margin: 0 0 2px 0;">Name: <span style="margin-left:70px;">${name}</span> </p>
-            <p style="margin: 0 0 2px 0;">ID/Iqama No.: ${idNumber}</p>
+            <p style="margin: 0 0 2px 0;">ID/Iqama No.: ${tacNumber}</p>
             <p style="margin: 0 0 2px 0;">Issued on: <span style="margin-left:36px;">${issuedDate}</span> </p>
             <p style="margin: 0 0 2px 0;">Valid up to: <span style="margin-left:24px;">${expiryDate}</span></p>
            
@@ -360,7 +360,7 @@
         backCard.style.backgroundSize = "contain";
         backCard.innerHTML = `
         <img src="${downImage}" style="position: absolute; top: 25px; right: 15px; width: 220px;" />
-        <p style="position: absolute; top: 40px; left: 40px; color: red;font-size:20px;"><strong>ID No: ${tacNumber}</strong></p>
+        <p style="position: absolute; top: 40px; left: 40px; color: red;font-size:20px;"><strong>ID No: ${idNumber}</strong></p>
         <div style="position: absolute; top: 95px; left: 40px; width: 310px;height:220px; border: 2px solid black; font-size: 14px;">
         <div style="border-bottom: 2px solid black; padding: 5px;"><span style="font-size:18px;" >Details:</span></div>
           <div style="padding: 1px 3px;font-size:18px;width:220px;">
